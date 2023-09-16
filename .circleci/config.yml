@@ -8,12 +8,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Prepare Environment"
-          command: |
-            apt update
-            docker-php-ext-install zip
-
-      - run:
           name: "Create Environment file"
           command: |
             mv .env.example .env
