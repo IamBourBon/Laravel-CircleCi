@@ -7,10 +7,6 @@ jobs:
 
     steps:
       - checkout
-      - run:
-          name: "Create Environment file"
-          command: |
-            mv .env.example .env
 
       # Download and cache dependencies
       - restore_cache:
@@ -28,10 +24,6 @@ jobs:
           key: v1-dependencies-{{ checksum "composer.json" }}
           paths:
             - ./vendor
-
-      - run:
-          name: "Generate App key"
-          command: php artisan key:generate
 
       # run tests with phpunit
       - run:
