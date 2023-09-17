@@ -1,6 +1,9 @@
 version: 2.1
+orbs:
+  docker: circleci/docker@2.2.0
+
 jobs:
-  build:
+  test:
     docker:
       # Specify the version you desire here
       - image: cimg/php:8.2.10
@@ -29,3 +32,34 @@ jobs:
       - run:
           name: "Run Unit Tests"
           command: ./vendor/bin/phpunit tests/Unit
+
+  build-and-push:
+    environment:
+      DOCKER_IMAGE: tuanminh4777/laravel-circleci
+      DOCKER_TAG: latest
+    executor: docker/docker
+    steps:
+      - setup_remote_docker
+      - checkout
+      - docker/check:
+          docker-username: DOCKER_USER
+          docker-password: DOCKER_PASSWORD
+      - docker/build:
+          image: $DOCKER_IMAGE
+          tag: $DOCKER_TAG
+      - docker/push:
+          digest-path: /tmp/digest.txt
+          image: $DOCKER_IMAGE
+          tag: $DOCKER_TAG
+      - run:
+          command: |
+            echo "Digest is: $(</tmp/digest.txt)"  
+
+workflows:
+  pipeline-laravel:
+    jobs:
+      - build-and-push:
+          filters:
+            branches:
+              only:
+                - master
