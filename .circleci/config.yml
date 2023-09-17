@@ -58,7 +58,10 @@ jobs:
 workflows:
   pipeline-laravel:
     jobs:
+      - test
       - build-and-push:
+          requires:
+            - test
           filters:
             branches:
               only:
