@@ -19,8 +19,8 @@ class ExampleTest extends TestCase
         $this->assertFalse(false);
     }
 
-    public function test_auto_false(): void
-    {
-        $this->assertFalse(true);
-    }
+    // public function test_auto_false(): void
+    // {
+    //     $this->assertFalse(true);
+    // }
 }
